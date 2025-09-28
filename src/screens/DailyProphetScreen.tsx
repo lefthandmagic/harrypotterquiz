@@ -13,7 +13,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useUser } from '../contexts/UserContext';
 import { useNavigation } from '@react-navigation/native';
-import { questions } from '../data/questions';
+import { getRandomQuestions } from '../utils/questionUtils';
 import { Question } from '../types';
 
 const { width } = Dimensions.get('window');
@@ -66,9 +66,9 @@ const DailyProphetScreen = () => {
   }, [timeLeft, showResult, isCompleted]);
 
   const generateDailyQuestions = () => {
-    // Generate 5 random questions from different years and chapters
-    const shuffled = [...questions].sort(() => 0.5 - Math.random());
-    setDailyQuestions(shuffled.slice(0, 5));
+    // Generate 5 random questions from different books and chapters
+    const randomQuestions = getRandomQuestions(5);
+    setDailyQuestions(randomQuestions);
   };
 
   const handleAnswer = (answerIndex: number) => {

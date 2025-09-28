@@ -13,7 +13,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useUser } from '../contexts/UserContext';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { questions } from '../data/questions';
+import { getQuestionsForBookAndChapter } from '../utils/questionUtils';
 
 const { width, height } = Dimensions.get('window');
 
@@ -32,8 +32,8 @@ const QuizScreen = () => {
   const [timeLeft, setTimeLeft] = useState(30); // 30 seconds per question
 
   useEffect(() => {
-    // Get questions for this chapter
-    const chapterQuestions = questions.filter(q => q.year === year && q.chapter === chapter);
+    // Get questions for this book and chapter
+    const chapterQuestions = getQuestionsForBookAndChapter(year, chapter);
     setQuizQuestions(chapterQuestions.slice(0, 10)); // Limit to 10 questions
   }, [year, chapter]);
 

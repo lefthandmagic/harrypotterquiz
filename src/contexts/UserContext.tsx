@@ -198,22 +198,25 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     AsyncStorage.setItem('isFirstTime', 'false');
   };
 
-  const completeQuiz = (year: number, chapter: number, score: number, totalQuestions: number = 10) => {
+  const completeQuiz = (book: number, chapter: number, score: number, totalQuestions: number = 10) => {
     if (!state.user) return;
     
     const points = Math.floor(score * 10); // 10 points per correct answer
     dispatch({ type: 'ADD_POINTS', payload: points });
     
     const percentage = score / totalQuestions;
-    console.log(`Quiz completed: ${score}/${totalQuestions} (${Math.round(percentage * 100)}%)`);
+    console.log(`Quiz completed: Book ${book}, Chapter ${chapter} - ${score}/${totalQuestions} (${Math.round(percentage * 100)}%)`);
     
     if (percentage >= 0.7) { // 70% required to pass
       const nextChapter = chapter + 1;
-      const nextYear = nextChapter > 8 ? year + 1 : year;
-      const finalChapter = nextYear > year ? 1 : nextChapter;
+      const nextBook = nextChapter > 8 ? book + 1 : book;
+      const finalChapter = nextBook > book ? 1 : nextChapter;
       
-      console.log(`Unlocking next: Year ${nextYear}, Chapter ${finalChapter}`);
-      dispatch({ type: 'UPDATE_PROGRESS', payload: { year: nextYear, chapter: finalChapter } });
+      // Don't advance beyond Book 7
+      const finalBook = nextBook > 7 ? 7 : nextBook;
+      
+      console.log(`Unlocking next: Book ${finalBook}, Chapter ${finalChapter}`);
+      dispatch({ type: 'UPDATE_PROGRESS', payload: { year: finalBook, chapter: finalChapter } });
     } else {
       console.log('Score too low to unlock next chapter. Need 70% to pass.');
     }

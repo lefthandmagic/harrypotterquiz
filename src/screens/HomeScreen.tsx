@@ -12,6 +12,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useUser } from '../contexts/UserContext';
 import { useNavigation } from '@react-navigation/native';
+import { getChapterTitles, isChapterUnlocked } from '../utils/questionUtils';
 
 const { width } = Dimensions.get('window');
 
@@ -64,17 +65,8 @@ const HomeScreen = () => {
     { year: 7, title: 'The Deathly Hallows', color: '#4338CA' },
   ];
 
-  // Dynamic chapters data based on user progress
-  const chapters = [
-    { chapter: 1, title: 'The Boy Who Lived', unlocked: true },
-    { chapter: 2, title: 'The Vanishing Glass', unlocked: true },
-    { chapter: 3, title: 'The Letters from No One', unlocked: true },
-    { chapter: 4, title: 'The Keeper of the Keys', unlocked: true },
-    { chapter: 5, title: 'Diagon Alley', unlocked: true },
-    { chapter: 6, title: 'The Journey from Platform Nine and Three-Quarters', unlocked: true },
-    { chapter: 7, title: 'The Sorting Hat', unlocked: true },
-    { chapter: 8, title: 'The Potions Master', unlocked: true },
-  ];
+  // Dynamic chapters data based on user progress and current book
+  const chapters = getChapterTitles(state.user.currentYear);
 
   if (!state.user) {
     return (
@@ -100,7 +92,7 @@ const HomeScreen = () => {
               <Text style={styles.houseEmblem}>{getHouseEmblem(state.user.house)}</Text>
             </View>
             <Text style={styles.mainTitle}>Welcome back, {state.user.name}!</Text>
-            <Text style={styles.tagline}>{state.user.house} • Year {state.user.currentYear}</Text>
+            <Text style={styles.tagline}>{state.user.house} • Book {state.user.currentYear}</Text>
           </View>
 
           {/* Main Content Card */}
@@ -114,7 +106,7 @@ const HomeScreen = () => {
                     <Ionicons name="school" size={24} color="#8B5CF6" />
                   </View>
                   <Text style={styles.statNumber}>{state.user.currentYear}</Text>
-                  <Text style={styles.statLabel}>Current Year</Text>
+                  <Text style={styles.statLabel}>Current Book</Text>
                 </View>
                 <View style={styles.statItem}>
                   <View style={styles.statIconContainer}>
@@ -144,9 +136,9 @@ const HomeScreen = () => {
             <View style={styles.currentSection}>
               <Text style={styles.sectionTitle}>📚 Current Studies</Text>
               <View style={styles.currentYearCard}>
-                <Text style={styles.yearTitle}>Year {state.user.currentYear}</Text>
+                <Text style={styles.yearTitle}>Book {state.user.currentYear}</Text>
                 <Text style={styles.yearSubtitle}>
-                  {years[state.user.currentYear - 1]?.title || 'Unknown Year'}
+                  {years[state.user.currentYear - 1]?.title || 'Unknown Book'}
                 </Text>
                 <Text style={styles.chapterText}>
                   Chapter {state.user.currentChapter}
@@ -159,9 +151,13 @@ const HomeScreen = () => {
               <Text style={styles.sectionTitle}>🎯 Available Chapters</Text>
               <View style={styles.chaptersGrid}>
                 {chapters.map((chapter, index) => {
-                  // Chapter is unlocked if it's at or before the user's current progress
-                  const isUnlocked = (state.user.currentYear > 1) || 
-                    (state.user.currentYear === 1 && chapter.chapter <= state.user.currentChapter);
+                  // Chapter is unlocked based on user's current book and chapter progress
+                  const isUnlocked = isChapterUnlocked(
+                    state.user.currentYear, 
+                    state.user.currentChapter, 
+                    state.user.currentYear, 
+                    chapter.chapter
+                  );
                   
                   return (
                     <TouchableOpacity

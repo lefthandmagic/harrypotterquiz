@@ -1,7 +1,7 @@
-import { Question } from '../types';
+import { Question } from '../../types';
 
-export const questions: Question[] = [
-  // Year 1 - Chapter 1: The Boy Who Lived
+export const book1Questions: Question[] = [
+  // Book 1 - Chapter 1: The Boy Who Lived
   {
     id: '1-1-1',
     text: 'What is the name of the street where the Dursleys live?',
@@ -36,7 +36,7 @@ export const questions: Question[] = [
     category: 'Creatures',
   },
 
-  // Year 1 - Chapter 2: The Vanishing Glass
+  // Book 1 - Chapter 2: The Vanishing Glass
   {
     id: '1-2-1',
     text: 'What happens when Harry accidentally makes the glass disappear at the zoo?',
@@ -60,7 +60,7 @@ export const questions: Question[] = [
     category: 'Plot',
   },
 
-  // Year 1 - Chapter 3: The Letters from No One
+  // Book 1 - Chapter 3: The Letters from No One
   {
     id: '1-3-1',
     text: 'How many letters does Harry receive on his eleventh birthday?',
@@ -84,7 +84,7 @@ export const questions: Question[] = [
     category: 'Locations',
   },
 
-  // Year 1 - Chapter 4: The Keeper of the Keys
+  // Book 1 - Chapter 4: The Keeper of the Keys
   {
     id: '1-4-1',
     text: 'Who breaks down the door of the hut?',
@@ -119,7 +119,7 @@ export const questions: Question[] = [
     category: 'Characters',
   },
 
-  // Year 1 - Chapter 5: Diagon Alley
+  // Book 1 - Chapter 5: Diagon Alley
   {
     id: '1-5-1',
     text: 'How do you enter Diagon Alley?',
@@ -154,7 +154,7 @@ export const questions: Question[] = [
     category: 'Magic',
   },
 
-  // Year 1 - Chapter 6: The Journey from Platform Nine and Three-Quarters
+  // Book 1 - Chapter 6: The Journey from Platform Nine and Three-Quarters
   {
     id: '1-6-1',
     text: 'What platform does the Hogwarts Express leave from?',
@@ -189,7 +189,7 @@ export const questions: Question[] = [
     category: 'Characters',
   },
 
-  // Year 1 - Chapter 7: The Sorting Hat
+  // Book 1 - Chapter 7: The Sorting Hat
   {
     id: '1-7-1',
     text: 'What does the Sorting Hat do?',
@@ -224,7 +224,7 @@ export const questions: Question[] = [
     category: 'Plot',
   },
 
-  // Year 1 - Chapter 8: The Potions Master
+  // Book 1 - Chapter 8: The Potions Master
   {
     id: '1-8-1',
     text: 'Who teaches Potions?',
@@ -259,4 +259,3 @@ export const questions: Question[] = [
     category: 'Houses',
   },
 ];
-

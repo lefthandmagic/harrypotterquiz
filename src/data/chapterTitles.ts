@@ -1,0 +1,78 @@
+// Chapter titles for each Harry Potter book
+export const chapterTitles: Record<number, { chapter: number; title: string }[]> = {
+  1: [
+    { chapter: 1, title: 'The Boy Who Lived' },
+    { chapter: 2, title: 'The Vanishing Glass' },
+    { chapter: 3, title: 'The Letters from No One' },
+    { chapter: 4, title: 'The Keeper of the Keys' },
+    { chapter: 5, title: 'Diagon Alley' },
+    { chapter: 6, title: 'The Journey from Platform Nine and Three-Quarters' },
+    { chapter: 7, title: 'The Sorting Hat' },
+    { chapter: 8, title: 'The Potions Master' },
+  ],
+  2: [
+    { chapter: 1, title: 'The Worst Birthday' },
+    { chapter: 2, title: 'Dobby\'s Warning' },
+    { chapter: 3, title: 'The Burrow' },
+    { chapter: 4, title: 'At Flourish and Blotts' },
+    { chapter: 5, title: 'The Whomping Willow' },
+    { chapter: 6, title: 'Gilderoy Lockhart' },
+    { chapter: 7, title: 'Mudbloods and Murmurs' },
+    { chapter: 8, title: 'The Deathday Party' },
+  ],
+  3: [
+    { chapter: 1, title: 'Owl Post' },
+    { chapter: 2, title: 'Aunt Marge\'s Big Mistake' },
+    { chapter: 3, title: 'The Knight Bus' },
+    { chapter: 4, title: 'The Leaky Cauldron' },
+    { chapter: 5, title: 'The Dementor' },
+    { chapter: 6, title: 'Talons and Tea Leaves' },
+    { chapter: 7, title: 'The Boggart in the Wardrobe' },
+    { chapter: 8, title: 'Flight of the Fat Lady' },
+  ],
+  4: [
+    { chapter: 1, title: 'The Riddle House' },
+    { chapter: 2, title: 'The Scar' },
+    { chapter: 3, title: 'The Invitation' },
+    { chapter: 4, title: 'Back to the Burrow' },
+    { chapter: 5, title: 'Weasley\'s Wizard Wheezes' },
+    { chapter: 6, title: 'The Portkey' },
+    { chapter: 7, title: 'Bagman and Crouch' },
+    { chapter: 8, title: 'The Quidditch World Cup' },
+  ],
+  5: [
+    { chapter: 1, title: 'Dudley Demented' },
+    { chapter: 2, title: 'A Peck of Owls' },
+    { chapter: 3, title: 'The Advance Guard' },
+    { chapter: 4, title: 'Number Twelve, Grimmauld Place' },
+    { chapter: 5, title: 'The Order of the Phoenix' },
+    { chapter: 6, title: 'The Noble and Most Ancient House of Black' },
+    { chapter: 7, title: 'The Ministry of Magic' },
+    { chapter: 8, title: 'The Hearing' },
+  ],
+  6: [
+    { chapter: 1, title: 'The Other Minister' },
+    { chapter: 2, title: 'Spinner\'s End' },
+    { chapter: 3, title: 'Will and Won\'t' },
+    { chapter: 4, title: 'Horace Slughorn' },
+    { chapter: 5, title: 'An Excess of Phlegm' },
+    { chapter: 6, title: 'Draco\'s Detour' },
+    { chapter: 7, title: 'The Slug Club' },
+    { chapter: 8, title: 'Snape Victorious' },
+  ],
+  7: [
+    { chapter: 1, title: 'The Dark Lord Ascending' },
+    { chapter: 2, title: 'In Memoriam' },
+    { chapter: 3, title: 'The Dursleys Departing' },
+    { chapter: 4, title: 'The Seven Potters' },
+    { chapter: 5, title: 'Fallen Warrior' },
+    { chapter: 6, title: 'The Ghoul in Pajamas' },
+    { chapter: 7, title: 'The Will of Albus Dumbledore' },
+    { chapter: 8, title: 'The Wedding' },
+  ],
+};
+
+// Helper function to get chapter titles for a specific book
+export const getChapterTitlesForBook = (book: number): { chapter: number; title: string }[] => {
+  return chapterTitles[book] || [];
+};
