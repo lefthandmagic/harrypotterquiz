@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -19,6 +19,16 @@ const { width } = Dimensions.get('window');
 const HomeScreen = () => {
   const { state } = useUser();
   const navigation = useNavigation();
+  const [selectedBook, setSelectedBook] = useState(state.user?.currentYear || 1);
+  const lastUserYear = useRef(state.user?.currentYear || 1);
+
+  // Update selected book when user progresses to a new book (only on actual progression)
+  useEffect(() => {
+    if (state.user && state.user.currentYear > lastUserYear.current) {
+      setSelectedBook(state.user.currentYear);
+      lastUserYear.current = state.user.currentYear;
+    }
+  }, [state.user?.currentYear]);
 
   const getHouseColor = (house: string) => {
     switch (house.toLowerCase()) {
@@ -54,6 +64,13 @@ const HomeScreen = () => {
     navigation.navigate('Quiz', { year, chapter });
   };
 
+  const selectBook = (bookNumber: number) => {
+    // Only allow selection of books that are unlocked (completed or current)
+    if (bookNumber <= state.user.currentYear) {
+      setSelectedBook(bookNumber);
+    }
+  };
+
   // Sample years data
   const years = [
     { year: 1, title: "The Philosopher's Stone", color: '#DC2626' },
@@ -65,8 +82,8 @@ const HomeScreen = () => {
     { year: 7, title: 'The Deathly Hallows', color: '#4338CA' },
   ];
 
-  // Dynamic chapters data based on user progress and current book
-  const chapters = getChapterTitles(state.user.currentYear);
+  // Dynamic chapters data based on selected book
+  const chapters = getChapterTitles(selectedBook);
 
   if (!state.user) {
     return (
@@ -132,17 +149,23 @@ const HomeScreen = () => {
               </View>
             </View>
 
-            {/* Current Year Section */}
+            {/* Current Studies */}
             <View style={styles.currentSection}>
-              <Text style={styles.sectionTitle}>📚 Current Studies</Text>
-              <View style={styles.currentYearCard}>
-                <Text style={styles.yearTitle}>Book {state.user.currentYear}</Text>
+              <Text style={styles.sectionTitle}>📚 Selected Book</Text>
+              <View style={[styles.currentYearCard, selectedBook === state.user.currentYear && styles.currentBookCard]}>
+                <Text style={styles.yearTitle}>Book {selectedBook}</Text>
                 <Text style={styles.yearSubtitle}>
-                  {years[state.user.currentYear - 1]?.title || 'Unknown Book'}
+                  {years[selectedBook - 1]?.title || 'Unknown Book'}
                 </Text>
                 <Text style={styles.chapterText}>
-                  Chapter {state.user.currentChapter}
+                  {selectedBook === state.user.currentYear 
+                    ? `Current Chapter: ${state.user.currentChapter}`
+                    : 'Completed Book'
+                  }
                 </Text>
+                {selectedBook !== state.user.currentYear && (
+                  <Text style={styles.completedText}>✓ Completed</Text>
+                )}
               </View>
             </View>
 
@@ -151,11 +174,11 @@ const HomeScreen = () => {
               <Text style={styles.sectionTitle}>🎯 Available Chapters</Text>
               <View style={styles.chaptersGrid}>
                 {chapters.map((chapter, index) => {
-                  // Chapter is unlocked based on user's current book and chapter progress
+                  // Chapter is unlocked based on user's progress and selected book
                   const isUnlocked = isChapterUnlocked(
                     state.user.currentYear, 
                     state.user.currentChapter, 
-                    state.user.currentYear, 
+                    selectedBook, 
                     chapter.chapter
                   );
                   
@@ -166,7 +189,7 @@ const HomeScreen = () => {
                         styles.chapterCard,
                         !isUnlocked && styles.lockedChapterCard
                       ]}
-                      onPress={() => isUnlocked && startQuiz(state.user.currentYear, chapter.chapter)}
+                      onPress={() => isUnlocked && startQuiz(selectedBook, chapter.chapter)}
                       disabled={!isUnlocked}
                     >
                       <View style={styles.chapterNumber}>
@@ -196,20 +219,21 @@ const HomeScreen = () => {
 
             {/* All Years Overview */}
             <View style={styles.yearsSection}>
-              <Text style={styles.sectionTitle}>🏰 All Years</Text>
+              <Text style={styles.sectionTitle}>🏰 All Books</Text>
               {years.map((yearData) => (
                 <TouchableOpacity
                   key={yearData.year}
                   style={[
                     styles.yearCard,
-                    state.user.currentYear < yearData.year && styles.lockedYearCard
+                    state.user.currentYear < yearData.year && styles.lockedYearCard,
+                    selectedBook === yearData.year && styles.selectedYearCard
                   ]}
-                  onPress={() => state.user.currentYear >= yearData.year && startQuiz(yearData.year, 1)}
+                  onPress={() => selectBook(yearData.year)}
                   disabled={state.user.currentYear < yearData.year}
                 >
                   <View style={styles.yearHeader}>
                     <View style={styles.yearInfo}>
-                      <Text style={styles.yearNumber}>Year {yearData.year}</Text>
+                      <Text style={styles.yearNumber}>Book {yearData.year}</Text>
                       <Text style={[
                         styles.yearTitleText,
                         state.user.currentYear < yearData.year && styles.lockedText
@@ -468,6 +492,22 @@ const styles = StyleSheet.create({
   lockedYearCard: {
     backgroundColor: '#F3F4F6',
     borderColor: '#D1D5DB',
+  },
+  selectedYearCard: {
+    borderColor: '#3B82F6',
+    borderWidth: 2,
+    backgroundColor: '#EBF8FF',
+  },
+  currentBookCard: {
+    borderColor: '#10B981',
+    borderWidth: 2,
+    backgroundColor: '#ECFDF5',
+  },
+  completedText: {
+    fontSize: 14,
+    color: '#10B981',
+    fontWeight: '600',
+    marginTop: 4,
   },
   yearHeader: {
     flexDirection: 'row',
