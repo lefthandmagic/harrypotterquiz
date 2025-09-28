@@ -66,8 +66,14 @@ describe('Questions Data', () => {
         expect(question.year).toBeGreaterThanOrEqual(1);
         expect(question.year).toBeLessThanOrEqual(7);
         expect(question.chapter).toBeGreaterThanOrEqual(1);
-        // Book 1 has 17 chapters, other books have 8 chapters
-        const maxChapters = question.year === 1 ? 17 : 8;
+        // Each book has different chapter counts
+        const maxChapters = question.year === 1 ? 17 : 
+                           question.year === 2 ? 18 :
+                           question.year === 3 ? 22 :
+                           question.year === 4 ? 37 :
+                           question.year === 5 ? 38 :
+                           question.year === 6 ? 30 :
+                           question.year === 7 ? 37 : 8;
         expect(question.chapter).toBeLessThanOrEqual(maxChapters);
       });
     });
@@ -217,8 +223,14 @@ describe('Questions Data', () => {
       for (let book = 1; book <= 7; book++) {
         const chapters = getChapterTitles(book);
         expect(chapters.length).toBeGreaterThan(0);
-        // Book 1 has 17 chapters, other books have 8 chapters
-        const maxChapters = book === 1 ? 17 : 8;
+        // Each book has different chapter counts
+        const maxChapters = book === 1 ? 17 : 
+                           book === 2 ? 18 :
+                           book === 3 ? 22 :
+                           book === 4 ? 37 :
+                           book === 5 ? 38 :
+                           book === 6 ? 30 :
+                           book === 7 ? 37 : 8;
         expect(chapters.length).toBeLessThanOrEqual(maxChapters);
         
         chapters.forEach(chapter => {
